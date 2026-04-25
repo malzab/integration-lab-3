@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pogoda</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h2>Aktualna temperatura: <span id="temp"></span>°C</h2>
+
+<canvas id="chart"></canvas>
+
+<script>
+fetch('/api/weather')
+  .then(res => res.json())
+  .then(data => {
+
+    document.getElementById("temp").innerText = data.currentTemp;
+
+    new Chart(document.getElementById("chart"), {
+      type: "line",
+      data: {
+        labels: data.time,
+        datasets: [{
+          label: "Temperatura (24h)",
+          data: data.temperature
+        }]
+      }
+    });
+
+  });
+</script>
+
+</body>
+</html>
