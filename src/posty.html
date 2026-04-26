@@ -9,7 +9,7 @@
 <div id="stats"></div>
 
 <h3>Posty:</h3>
-<ul id="list"></ul>
+<ol id="list"></ol>
 
 <script>
 fetch('/api/posty')
@@ -24,7 +24,7 @@ fetch('/api/posty')
 
     data.posts.forEach(p => {
       const li = document.createElement("li");
-      li.textContent = p.id + ". "+ p.title;
+      li.textContent = p.title;
       list.appendChild(li);
     });
 
