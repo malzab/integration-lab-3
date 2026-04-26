@@ -67,3 +67,29 @@ router.get("/posty", async (req, res) => {
 router.get("/postystrona", (req, res) => {
   res.sendFile(path.join(__dirname, "../posty.html"));
 });
+
+router.get("/podsumowanie", async (req, res) => {
+  try {
+    const lat = req.query.lat || 54.52;
+    const lon = req.query.lon || 18.53;
+
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m`;
+
+    const response = await axios.get(url);
+
+    const temps = response.data.hourly.temperature_2m.slice(0, 24);
+
+    const sum = temps.reduce((a, b) => a + b, 0);
+    const avg = sum / temps.length;
+
+    const min = Math.min(...temps);
+    const max = Math.max(...temps);
+
+    res.json({
+      srednia_temperatura: avg.toFixed(2),
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: "Error podsumowania" });
+  }
+});
